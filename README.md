@@ -1,4 +1,4 @@
-VAssetManagement ZF2 Module
+VAssetManager ZF2 Module
 ***************************
 
 Allows to manage the assets and layouts for web application.

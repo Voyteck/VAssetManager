@@ -2,7 +2,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Assetmanager\Controller\Index' => 'Assetmanager\Controller\IndexController',
+            'Vassetmanager\Controller\Index' => 'Vassetmanager\Controller\IndexController',
         ),
     ),
     'router' => array(
@@ -13,7 +13,7 @@ return array(
                 'options' => array(
                     'route'    => '/asset/[:action]/[:moduleName][/:controllerName][/:actionName]/[:assetName]',
                     'defaults' => array(
-                        'controller'    => \Assetmanager\Controller\IndexController::class,
+                        'controller'    => \Vassetmanager\Controller\IndexController::class,
                         'action'        => 'index',
                     ),
                     'constraints' => array(
@@ -29,7 +29,7 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'Assetmanager' => __DIR__ . '/../view',
+            'Vassetmanager' => __DIR__ . '/../view',
         ),
     ),
 );
