@@ -18,10 +18,21 @@ class IndexController extends AbstractActionController
         return array();
     }
 
-    public function fooAction()
-    {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /index/index/foo
-        return array();
+    public function jsAction() {
+        $filename = $this->getServiceLocator()->get('Config')['view_manager']['template_path_stack'][$this->params('moduleName')] .
+            '/assets/js' .
+            ($this->params('moduleName')        ? '/' . $this->params('moduleName')         : '') .
+            ($this->params('controllerName')    ? '/' . $this->params('controllerName')     : '') .
+            ($this->params('actionName')        ? '/' . $this->params('actionName')         : '') .
+            ($this->params('assetName')         ? '/' . $this->params('assetName')          : '') .
+            '.js';
+
+        echo $filename;
+
+        echo file_get_contents($filename);
+    }
+
+    public function cssAction() {
+        return array('text' => 'css action from asset controller');
     }
 }
