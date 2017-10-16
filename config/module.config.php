@@ -9,17 +9,19 @@ return array(
         'routes' => array(
 
             'asset' => array(
-                'type'    => 'Segment',
+                'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/asset/[:action]/[:moduleName][/:controllerName][/:actionName]/[:assetName]',
+                    'route'    => '/asset/:action/[:moduleName][/:controllerName][/:assetName]',
                     'defaults' => array(
                         'controller'    => \Vassetmanager\Controller\IndexController::class,
                         'action'        => 'index',
                     ),
                     'constraints' => array(
-                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'moduleName'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'assetName'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'asset_type'         => '[js|css|img]',
+                        'moduleName'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'controllerName'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'actionName'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'assetName'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                 ),
                 'may_terminate' => true,
@@ -31,5 +33,13 @@ return array(
         'template_path_stack' => array(
             'Vassetmanager' => __DIR__ . '/../view',
         ),
+    ),
+
+    'asset_manager' => array(
+        'asset_types' => array(
+            'js'    => '.js',
+            'css'   => '.css',
+            'img'   => array('.png', '.jpg', '.jpeg'),
+        )
     ),
 );

@@ -10,29 +10,63 @@
 namespace Vassetmanager\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Http\Headers;
 
 class IndexController extends AbstractActionController
 {
-    public function indexAction()
-    {
-        return array();
+
+    protected function retrieveAsset($assetType) {
+        if (is_string($this->getServiceLocator()->get('Config')['asset_manager']['asset_types'][$assetType]))
+            $assetExtensions = array($this->getServiceLocator()->get('Config')['asset_manager']['asset_types'][$assetType]);
+
+        $response = $this->getResponse();
+        $headers = new Headers();
+
+        foreach($assetExtensions as $fileExt) {
+            if (is_null($this->params('assetName'))) {
+                if (is_null($this->params('controllerName')))
+                    $assetName = $this->params('moduleName');
+                else
+                    $assetName = $this->params('controllerName');
+            }
+            else
+                $assetName = $this->params('assetName');
+
+            $filename = sprintf(
+                $this->getServiceLocator()->get('Config')['view_manager']['template_path_stack'][$this->params('moduleName')] .
+                '/assets/%s' .
+//                 ($this->params('moduleName')        ? '/' . $this->params('moduleName')         : '') .
+                ($this->params('controllerName')    ? '/' . $this->params('controllerName')     : '') .
+//                 ($this->params('assetName')         ? '/' . $this->params('assetName')          : '/index') .
+                '/' . $assetName . '%s'
+                , $assetType, $fileExt);
+
+//             echo 'moduleName: ' . $this->params('moduleName') . '<br>';
+//             echo 'controllerName: ' . $this->params('controllerName') . '<br>';
+//             echo 'actionName: ' . $this->params('actionName') . '<br>';
+//             echo 'assetName: ' . $this->params('assetName') . '<br>';
+//             echo 'filename:' . $filename . '<br>';
+//             return array();
+
+            if (file_exists($filename)) {
+                $headers->addHeaderLine('Content-Type', 'text/javascript');
+                $response->setContent(file_get_contents($filename));
+                $response->setHeaders($headers);
+                return $response;
+            }
+        }
+        return $response->setStatusCode(404);
     }
 
     public function jsAction() {
-        $filename = $this->getServiceLocator()->get('Config')['view_manager']['template_path_stack'][$this->params('moduleName')] .
-            '/assets/js' .
-            ($this->params('moduleName')        ? '/' . $this->params('moduleName')         : '') .
-            ($this->params('controllerName')    ? '/' . $this->params('controllerName')     : '') .
-            ($this->params('actionName')        ? '/' . $this->params('actionName')         : '') .
-            ($this->params('assetName')         ? '/' . $this->params('assetName')          : '') .
-            '.js';
-
-        echo $filename;
-
-        echo file_get_contents($filename);
+        return $this->retrieveAsset('js');
     }
 
     public function cssAction() {
-        return array('text' => 'css action from asset controller');
+        return $this->retrieveAsset('css');
+    }
+
+    public function imgAction() {
+        return $this->retrieveAsset('img');
     }
 }

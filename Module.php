@@ -62,7 +62,9 @@ class Module implements AutoloaderProviderInterface
         $controllerName     = str_replace('Controller', "", substr($controllerClass, strrpos($controllerClass, '\\')+1 ));
         $config             = $e->getApplication()->getServiceManager()->get('config');
 
-        $defaultFilePathSegment = str_replace("/-", "/", strtolower(preg_replace('/([A-Z])/', '-$1', "/" . $moduleNamespace . "/" . $controllerName . "/" . $controller->params("action"))));
+//         $defaultFilePathSegment = str_replace("/-", "/", strtolower(preg_replace('/([A-Z])/', '-$1', "/" . $moduleNamespace . "/" . $controllerName . "/" . $controller->params("action"))));
+        $defaultFilePathSegment = str_replace("/-", "/", strtolower(preg_replace('/([A-Z])/', '-$1', "/asset/%s/" . $moduleNamespace . "/" . $controllerName . "/" . $controller->params("action"))));
+
 
         if (isset($config['head_values'][$moduleNamespace]['title'])) {
             $HeadTitleHelper = $e->getApplication()->getServiceManager()->get('ViewHelperManager')->get('HeadTitle');
@@ -79,9 +81,11 @@ class Module implements AutoloaderProviderInterface
             $scripts = array_merge($scripts, $config['head_values'][$moduleNamespace]['scripts']);
         if (isset($config['head_values'][$moduleNamespace]['final_scripts']))
             $scripts = array_merge($scripts, $config['head_values'][$moduleNamespace]['final_scripts']);
-        $defaultJSPath      = "/js" . $defaultFilePathSegment . ".js";
-        if (file_exists($_SERVER["DOCUMENT_ROOT"] . $defaultJSPath))
+
+        $defaultJSPath      = sprintf($defaultFilePathSegment, 'js');
+//         if (file_exists($_SERVER["DOCUMENT_ROOT"] . $defaultJSPath))
             $scripts[] = $defaultJSPath;
+
         if (sizeof($scripts) > 0) {
             $scripts = array_unique($scripts);
             $HeadScriptHelper= $e->getApplication()->getServiceManager()->get('ViewHelperManager')->get('HeadScript');
@@ -99,9 +103,11 @@ class Module implements AutoloaderProviderInterface
             $stylesheets = array_merge($stylesheets, $config['head_values'][$moduleNamespace]['stylesheets']);
         if (isset($config['head_values'][$moduleNamespace]['final_stylesheets']))
             $stylesheets = array_merge($stylesheets, $config['head_values'][$moduleNamespace]['final_stylesheets']);
-        $defaultCSSPath     = "/css" . $defaultFilePathSegment . ".css";
-        if (file_exists($_SERVER["DOCUMENT_ROOT"] . $defaultCSSPath))
+
+        $defaultCSSPath     = sprintf($defaultFilePathSegment, 'css');
+//         if (file_exists($_SERVER["DOCUMENT_ROOT"] . $defaultCSSPath))
             $stylesheets[] = $defaultCSSPath;
+
         if (sizeof($stylesheets) > 0) {
             $stylesheets = array_unique($stylesheets);
             $HeadLinkHelper= $e->getApplication()->getServiceManager()->get('ViewHelperManager')->get('HeadLink');
