@@ -5,16 +5,21 @@ Allows to manage the assets and layouts for web application.
 
 Contains also EdpModuleLayouts from https://github.com/EvanDotPro/EdpModuleLayouts
 
-Porvides following functionality:
+Provides following functionality:
 - setting up templates for modules
 - setting up CSS and JS files loaded in module headers and footers
 - providing CSS and JS files using controller/action (not from public/ directory)
 
 
+
 SETTING UP MODULE LAYOUTS
+
 @TODO
 
+
+
 SETTING UP CSS AND JS LINKS
+
 Module allows to setup what kind of JS and CSS files needs to be loaded on every page.
 This is configured using module.config.php (or any other, customized config) file
 in the ['head_values'][modulename] key (where modulename is actual name of the module
@@ -45,5 +50,8 @@ for which configuration is stored - e.g. Application) and allows to setup follow
 	will load jquery and bootstrap files
 
 
+
+
 SETTING UP ASSETS MANAGEMENT
+
 @TODO
